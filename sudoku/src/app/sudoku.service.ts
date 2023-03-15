@@ -74,31 +74,23 @@ export class SudokuService {
   }
 
 
-
-  checkValidInput(values: string[][]) {
-    let b=this.isValidConfig(values,9);
+  checkValidInput(values: string[][],n:number) {
+    let b=this.isValidConfig(values,n);
     console.log(b);
-
-    if(b){
-      return true;
-    }
-    else{
-      alert("Wrong Input");
-      return false;
-    }
+    return b;
   }
   isValidConfig(arr: string[][], n: number) {
     for (let i = 0; i < n; i++) {
       for (let j = 0; j < n; j++) {
-        if (!this.isValid(arr, i, j)) return false;
+        if (!this.isValid(arr, i, j, n)) return false;
       }
     }
     return true;
   }
-  isValid(arr: string[][], row: number, col: number) {
+  isValid(arr: string[][], row: number, col: number, n:number) {
     return (
-      this.notInRow(arr, row) &&
-      this.notInCol(arr, col) &&
+      this.notInRow(arr, row,n) &&
+      this.notInCol(arr, col,n) &&
       this.notInBox(arr, row - (row % 3), col - (col % 3))
     );
   }
@@ -114,19 +106,19 @@ export class SudokuService {
     }
     return true;
   }
-  notInCol(arr: string[][], col: number) {
+  notInCol(arr: string[][], col: number, n:number) {
     let st = new Set<string>();
 
-    for (let i = 0; i < 9; i++) {
+    for (let i = 0; i < n; i++) {
       if (st.has(arr[i][col])) return false;
       if (arr[i][col] != '') st.add(arr[i][col]);
     }
     return true;
   }
-  notInRow(arr: string[][], row: number) {
+  notInRow(arr: string[][], row: number,n:number) {
     let st = new Set<string>();
 
-    for (let i = 0; i < 9; i++) {
+    for (let i = 0; i < n; i++) {
       if (st.has(arr[row][i])) return false;
       if (arr[row][i] != '') st.add(arr[row][i]);
     }
